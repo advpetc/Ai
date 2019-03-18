@@ -29,9 +29,13 @@ for order in range(10):
         alg = choice(["minimax", "ab"])
         tf.write(str(num_heros) + "\n")
         tf.write(alg + "\n")
+        rounds = randrange(6)
         for i in range(num_heros):
             t = TestHero(IDS[i])
-            if i < 5:
-                state = choice(["1", "2"])
+            if i < rounds:
+                if i % 2 == 1:
+                    state = "1"
+                else:
+                    state = "2"
                 t.setMem(state)
             tf.write(repr(t))
