@@ -5,6 +5,7 @@ __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 directory = "my_tests/"
 
+
 class TestHero:
     def __init__(self, ID):
         self.ID = ID
@@ -20,6 +21,7 @@ class TestHero:
         return "{0},{1},{2},{3},{4}\n".format(self.ID,
                 self.p, self.my_m, self.opp_m, self.state)
 
+
 for order in range(10):
     fname = directory + "input{}.txt".format(order)
     with open(os.path.join(__location__, fname), "w+") as tf:
@@ -29,7 +31,7 @@ for order in range(10):
         alg = choice(["minimax", "ab"])
         tf.write(str(num_heros) + "\n")
         tf.write(alg + "\n")
-        rounds = randrange(6)
+        rounds = randrange(6) if alg == "ab" else randrange(4, 6)
         for i in range(num_heros):
             t = TestHero(IDS[i])
             if i < rounds:
