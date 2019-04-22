@@ -75,13 +75,24 @@ class Solver(object):
 
     def cal_util(self):
         _U = dict([(s, 0) for s in self.states])
+        _U[self.dest] = 100
         T, gamma, epsilon = self.T, 0.9, 0.1
         while True:
             U = _U.copy()
             delta = 0
             for s in self.states:
-                if s == self.dest: continue
+                if s == self.dest: 
+                    continue
                 reward = self.reward[s[0], s[1]]
+                # max_score = 0
+                # for action in orientation:
+                #     score = 0
+                #     for (p, s1) in T(s, action):
+                #         u = U[s1]
+                #         score += (p * u)
+                #     max_score = max(max_score, score)
+                # _U[s] = reward + gamma * max_score
+
                 _U[s] = reward + gamma * max([sum([p * U[s1] for (p, s1) in T(s, a)])
                                                              for a in orientation])
                 delta = max(delta, abs(_U[s] - U[s]))
@@ -92,32 +103,29 @@ class Solver(object):
         def go(state, direction):
             curr = (state[0] + direction[0], state[1] + direction[1])
             return curr if curr in self.states else state
-        if action == None:
-            return [(0, 0, state)]
-        else:
-            # right, down, left, up
-            # left 2 -> back -> right 0
-            # left 2 -> right -> up   3
-            # left 2 -> left -> down  1
+        # right, down, left, up
+        # left 2 -> back -> right 0
+        # left 2 -> right -> up   3
+        # left 2 -> left -> down  1
 
-            # right 0 -> back -> left  2
-            # right 0 -> right -> down 1
-            # right 0 -> left -> up    3
+        # right 0 -> back -> left  2
+        # right 0 -> right -> down 1
+        # right 0 -> left -> up    3
 
-            # up 3 -> back -> down    1
-            # up 3 -> right -> right  0
-            # up 3 -> left -> left    2
+        # up 3 -> back -> down    1
+        # up 3 -> right -> right  0
+        # up 3 -> left -> left    2
 
-            # down 1 -> back -> up    3
-            # down 1 -> right -> left 2
-            # down 1 -> left -> right 0
-            right = orientation[(orientation.index(action) + 1) % len(orientation)]
-            left = orientation[orientation.index(action) - 1] # -1 = 3
-            back = orientation[(orientation.index(action) + 2) % len(orientation)]
-            return [(0.7, go(state, action)),
-                    (0.1, go(state, right)),
-                    (0.1, go(state, left)),
-                    (0.1, go(state, back))]
+        # down 1 -> back -> up    3
+        # down 1 -> right -> left 2
+        # down 1 -> left -> right 0
+        right = orientation[(orientation.index(action) + 1) % len(orientation)]
+        left = orientation[orientation.index(action) - 1] # -1 = 3
+        back = orientation[(orientation.index(action) + 2) % len(orientation)]
+        return [(0.7, go(state, action)),
+                (0.1, go(state, right)),
+                (0.1, go(state, left)),
+                (0.1, go(state, back))]
 
 def main():
     with open(os.path.join(__location__, test_path + 'input-3.txt'), 'r') as infile:
