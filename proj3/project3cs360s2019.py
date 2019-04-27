@@ -23,7 +23,7 @@ class Solver(object):
                     self.reward[x, y] = -101
                 else:
                     self.reward[x, y] = -1
-
+        
     def prettyPrint(self, U):
         to_print = ""
         for i in range(self.row):
@@ -128,7 +128,7 @@ class Solver(object):
                 (0.1, go(state, back))]
 
 def main():
-    with open(os.path.join(__location__, test_path + 'input-3.txt'), 'r') as infile:
+    with open(os.path.join(__location__, test_path + 'input-5.txt'), 'r') as infile:
         grid_size = int(infile.readline())
         num_obstacles = int(infile.readline())
         obstacles = list()
